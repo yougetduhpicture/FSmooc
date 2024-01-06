@@ -8,6 +8,7 @@ import Button from './components/Button'
 
 const App = () => {
   const api_key = process.env.REACT_APP_API_KEY
+  //WeatherMap key that actually works: 665ecd56dfc08dbb50feb8b8f5034e28
   const [countries, setCountries] = useState([])
   const [weather, setWeather] = useState([])
   const [apiAddress, setApiAddress] = useState ('')
