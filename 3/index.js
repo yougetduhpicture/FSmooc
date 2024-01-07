@@ -58,6 +58,10 @@ let persons = [
     res.json(persons)
   })
 
+  app.get('/', (req, res) => {
+    res.json(persons)
+  })
+
   app.get('/api/persons/:id', (request, response) => {
     
     const id = Number(request.params.id)
