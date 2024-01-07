@@ -24,6 +24,8 @@ app.use(morgan(
 
 app.use(cors())
 
+app.use(express.static('static'))
+
 let persons = [
     {
       id: 1,
