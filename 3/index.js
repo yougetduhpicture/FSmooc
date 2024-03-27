@@ -102,7 +102,7 @@ let persons = [
   } else if(persons.some((person) => person.name === body.name)){
     return response.status(400).json({ 
         error: 'Make sure to use a unique name' 
-      })
+    })
   }
 
   const person = {
