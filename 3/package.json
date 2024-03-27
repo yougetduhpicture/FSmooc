@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "proxy": "http://localhost:3001",
   "scripts": {
     "build:ui": "@powershell Remove-Item -Path build -Recurse -Force && cd ../2/puhelinluettelo2 && npm run build && cd .. && cd .. && @powershell Copy-Item -Path 2/puhelinluettelo2/build -Destination 3 -Recurse",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
