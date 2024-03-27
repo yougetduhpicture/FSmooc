@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const path = require('path');
 
 app.use(express.json())
   
@@ -24,7 +25,7 @@ app.use(morgan(
 
 app.use(cors())
 
-app.use(express.static('static'))
+app.use(express.static(path.join(__dirname, 'build')));
 
 let persons = [
     {
@@ -48,6 +49,10 @@ let persons = [
       number: "098765432"
     },
   ]
+
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/build', 'index.html'));
+  });
 
   app.get('/info', (req, res) => {
     const date = new Date()
