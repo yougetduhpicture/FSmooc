@@ -43,11 +43,6 @@ let persons = [
       name: "Dan Abramov",
       number: "12-43-234345"
     },
-    {
-      id: 4,
-      name: "Leonor",
-      number: "098765432"
-    },
   ]
 
   app.get('/', (req, res) => {
