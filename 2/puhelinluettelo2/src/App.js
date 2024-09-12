@@ -28,9 +28,9 @@ const App = () => {
   useEffect(hook, [])
 
 // NAME CHANGE HANDLING
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
+const handleNameChange = (event) => {
+  setNewName(event.target.value)
+}
 
 // NUMBER CHANGE HANDLING
 const handleNumberChange = (event) => {
@@ -59,7 +59,7 @@ const handleClick = (id) => {
   }
 }
 
-  // ADD PERSON
+// ADD PERSON
   const addPerson = (event) => {
     event.preventDefault()
       if (newName.length === 0 | newNumber.length === 0){
