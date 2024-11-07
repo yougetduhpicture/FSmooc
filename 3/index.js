@@ -7,6 +7,17 @@ const cors = require("cors");
 const path = require("path");
 const Person = require("./models/person");
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
 app.use(cors());
 
@@ -29,8 +40,9 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(errorHandler);
 
+// GET FRONT END
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/build", "index.html"));
 });
@@ -44,6 +56,7 @@ app.get("/info", (req, res) => {
   );
 });
 
+//GET ALL
 app.get("/api/people", (req, res) => {
   console.log("Getting people");
   Person.find({}).then((people) => {
@@ -51,17 +64,26 @@ app.get("/api/people", (req, res) => {
   });
 });
 
-app.get("/api/people/:id", (request, response) => {
-  Person.findById(request.params.id).then((person) => {
-    response.json(person);
-  });
+// GET WITH ID
+app.get("/api/people/:id", (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter((note) => note.id !== id);
-
-  response.status(204).end();
+// DELETE
+app.delete("/api/people/:id", (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
 const generateId = () => {
@@ -73,6 +95,7 @@ const generateId = () => {
   return getRandomInt();
 };
 
+//ADD PERSON
 app.post("/api/people", (request, response) => {
   const body = request.body;
   console.log(body.content);
@@ -90,14 +113,25 @@ app.post("/api/people", (request, response) => {
     console.log("saving a person");
     response.json(savedPerson);
   });
-  /**else if(people.some((person) => person.name === body.name)){
-    return response.status(400).json({ 
-        error: 'Make sure to use a unique name' 
-    })
-  }**/
+});
 
-  //people = people.concat(person)
-  //response.json(person)
+//UPDATE PERSON
+app.put("/api/people/:id", (request, response, next) => {
+  const body = request.body;
+  console.log(body);
+
+  const person = {
+    id: body.id,
+    content: body.name,
+    number: body.number,
+  };
+  console.log(person);
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 const PORT = process.env.PORT;

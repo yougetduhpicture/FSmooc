@@ -88,7 +88,6 @@ const App = () => {
       communicationService
         .create(personObject)
         .then((returnedPeople) => {
-          console.log(returnedPeople);
           setPersons(persons.concat(returnedPeople));
         })
         .then(() => {
@@ -98,7 +97,7 @@ const App = () => {
           }, 5000);
         });
 
-      // CHANGE NUMBER
+      // UPDATE NUMBER
     } else if (persons.some((person) => person.name === newName)) {
       if (
         window.confirm(
@@ -114,12 +113,10 @@ const App = () => {
           id: person.id,
           number: newNumber,
         };
+
         console.log(person);
         communicationService
-          .update(
-            persons.filter((person) => person.name === newName)[0].id,
-            changedPerson
-          )
+          .update(person.id, changedPerson)
           .then((returnedPerson) => {
             setPersons(
               persons.map((person) =>

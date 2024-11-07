@@ -1,0 +1,2 @@
+PUT http://localhost:3001/api/people/672c6d988de6cfcd4222c7ab
+content-type: application/json
