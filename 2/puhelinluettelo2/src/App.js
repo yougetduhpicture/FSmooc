@@ -95,6 +95,17 @@ const App = () => {
           setTimeout(() => {
             setMessage(null);
           }, 5000);
+        })
+        .catch((error) => {
+          console.log(
+            error.response.data.split("ValidationError:")[1].split("<br>")[0]
+          );
+          setErrorMessage(
+            error.response.data.split("ValidationError:")[1].split("<br>")[0]
+          );
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
         });
 
       // UPDATE NUMBER
