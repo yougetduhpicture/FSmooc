@@ -41,17 +41,26 @@ app.use(
 );
 
 // GET FRONT END
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/build", "index.html"));
+app.get("/", (req, res, next) => {
+  try {
+    res.sendFile(path.join(__dirname, "/build", "index.html"));
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.get("/info", (req, res) => {
-  const date = new Date();
-  date.getDate();
+//GET INFO
+app.get("/info", (req, res, next) => {
+  try {
+    const date = new Date();
+    const peopleCount = Person.length; // Assuming Person is an array of people
 
-  res.send(
-    `<p>Phonebook has info for ${persons.length} people</p><br><p>${date}</p>`
-  );
+    res.send(
+      `<p>Phonebook has info for ${peopleCount} people</p><br><p>${date}</p>`
+    );
+  } catch (error) {
+    next(error); // Pass the error to Express error handler
+  }
 });
 
 //GET ALL
