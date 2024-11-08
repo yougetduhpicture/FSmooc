@@ -40,8 +40,6 @@ app.use(
   })
 );
 
-app.use(errorHandler);
-
 // GET FRONT END
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/build", "index.html"));
@@ -57,11 +55,17 @@ app.get("/info", (req, res) => {
 });
 
 //GET ALL
-app.get("/api/people", (req, res) => {
+app.get("/api/people", (request, response, next) => {
   console.log("Getting people");
-  Person.find({}).then((people) => {
-    res.json(people);
-  });
+  Person.find({})
+    .then((people) => {
+      if (people) {
+        response.json(people);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 // GET WITH ID
@@ -96,7 +100,7 @@ const generateId = () => {
 };
 
 //ADD PERSON
-app.post("/api/people", (request, response) => {
+app.post("/api/people", (request, response, next) => {
   const body = request.body;
   console.log(body.content);
   if (!body.name || !body.number) {
@@ -109,16 +113,18 @@ app.post("/api/people", (request, response) => {
     number: body.number,
   });
 
-  person.save().then((savedPerson) => {
-    console.log("saving a person");
-    response.json(savedPerson);
-  });
+  person
+    .save()
+    .then((savedPerson) => {
+      console.log("saving a person");
+      response.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 //UPDATE PERSON
 app.put("/api/people/:id", (request, response, next) => {
   const body = request.body;
-  console.log(body);
 
   const person = {
     id: body.id,
@@ -133,6 +139,8 @@ app.put("/api/people/:id", (request, response, next) => {
     })
     .catch((error) => next(error));
 });
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
