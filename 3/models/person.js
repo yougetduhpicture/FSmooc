@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
 
-const url = process.env.MONGODB_URI;
+const url = process.env.MONGODB_URI
 
-console.log("connecting to", url);
+console.log('connecting to', url)
 mongoose
   .connect(url)
   .then((result) => {
-    console.log("connected to MongoDB");
+    console.log('connected to MongoDB')
   })
   .catch((error) => {
-    console.log("error connecting to MongoDB:", error.message);
-  });
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 const phoneBookSchema = new mongoose.Schema({
   id: String,
@@ -25,7 +25,7 @@ const phoneBookSchema = new mongoose.Schema({
     minlength: 8,
     validate: {
       validator: function (v) {
-        return /\d{2,3}-\d{5,}/.test(v);
+        return /\d{2,3}-\d{5,}/.test(v)
       },
       message: (
         props
@@ -33,14 +33,14 @@ const phoneBookSchema = new mongoose.Schema({
       The correct format is 2-3 numbers then - then 5+ numbers`,
     },
   },
-});
+})
 
-phoneBookSchema.set("toJSON", {
+phoneBookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   },
-});
+})
 
-module.exports = mongoose.model("Person", phoneBookSchema);
+module.exports = mongoose.model('Person', phoneBookSchema)
