@@ -20,7 +20,19 @@ const phoneBookSchema = new mongoose.Schema({
     minlength: 3,
     required: true,
   },
-  number: String,
+  number: {
+    type: String,
+    minlength: 8,
+    validate: {
+      validator: function (v) {
+        return /\d{2,3}-\d{5,}/.test(v);
+      },
+      message: (
+        props
+      ) => `${props.value} doesn't go to the right format for the phone number.
+      The correct format is 2-3 numbers then - then 5+ numbers`,
+    },
+  },
 });
 
 phoneBookSchema.set("toJSON", {

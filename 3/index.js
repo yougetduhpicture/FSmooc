@@ -49,7 +49,7 @@ app.get("/", (req, res, next) => {
   }
 });
 
-//GET INFO
+// GET INFO
 app.get("/info", (req, res, next) => {
   try {
     const date = new Date();
@@ -63,7 +63,7 @@ app.get("/info", (req, res, next) => {
   }
 });
 
-//GET ALL
+// GET ALL
 app.get("/api/people", (request, response, next) => {
   console.log("Getting people");
   Person.find({})
@@ -108,7 +108,7 @@ const generateId = () => {
   return getRandomInt();
 };
 
-//ADD PERSON
+// ADD PERSON
 app.post("/api/people", (request, response, next) => {
   const body = request.body;
   console.log(body.content);
@@ -131,7 +131,7 @@ app.post("/api/people", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-//UPDATE PERSON
+// UPDATE PERSON
 app.put("/api/people/:id", (request, response, next) => {
   const body = request.body;
 
