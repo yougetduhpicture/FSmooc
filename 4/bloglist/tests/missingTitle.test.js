@@ -9,7 +9,6 @@ const api = supertest(app)
 
 const initialBlogs = [
   {
-    _id: '5a422a851b54a676234d17f7',
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
@@ -17,7 +16,6 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: '5a422aa71b54a676234d17f8',
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
@@ -25,7 +23,6 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: '5a422b3a1b54a676234d17f9',
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
@@ -33,7 +30,6 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: '5a422b891b54a676234d17fa',
     title: 'First class tests',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
@@ -41,7 +37,7 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: '5a422ba71b54a676234d17fb',
+
     title: 'TDD harms architecture',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
@@ -49,7 +45,6 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: '5a422bc61b54a676234d17fc',
     title: 'Type wars',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
@@ -59,23 +54,22 @@ const initialBlogs = [
 ]
 
 beforeEach(async () => {
-
-  await Blog.deleteMany({})
-  await Blog.insertMany(initialBlogs)
+    
+    await Blog.deleteMany({})
+    await Blog.insertMany(initialBlogs)
 })
 
-test('the id is matching', async () => {
-  const response = await api.get('/api/blogs')
 
-  // each returned blog should have an `id` property (string) and not `_id`
-  response.body.forEach((b) => {
-    assert.ok(b.id, 'blog is missing id property')
-    assert.strictEqual(typeof b.id, 'string')
-    assert.strictEqual(b._id, undefined)
-  })
+test('post without title results to 400 bad request', async () => {
+  const newBlog = {
+    author: 'Test Author',
+    likes: 4,
+    url: 'http://example.com/no-title',
+  }
 
-  // first blog's id should match the original _id string
-  assert.strictEqual(response.body[0].id, initialBlogs[0]._id)
+  const postResponse = await api.post('/api/blogs').send(newBlog)
+  assert.strictEqual(postResponse.status, 400)
+
 })
 
 after(async () => {

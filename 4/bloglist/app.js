@@ -15,7 +15,7 @@ mongoose
     logger.info('connected to MongoDB')
   })
   .catch((error) => {
-    logger.error('error connection to MongoDB:', error.message)
+    logger.error('error connecting to MongoDB:', error.message)
   })
 
 app.use(express.static('dist'))
