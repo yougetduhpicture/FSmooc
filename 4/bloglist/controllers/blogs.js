@@ -6,6 +6,8 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 
 })
+
+// Create a new blog
 blogsRouter.post('/', async (request, response, next) => {
   try {
     const blog = new Blog(request.body)
@@ -16,9 +18,10 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 })
 
+// Delete a blog
+
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    // debug log
     console.log('DELETE id:', request.params.id)
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
@@ -27,7 +30,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     next(error)
   }
 })
-
+// Update a blog
 blogsRouter.put('/:id', async (request, response, next) => {
   try {
    
