@@ -17,24 +17,21 @@ beforeEach(async () => {
 })
 
 
-test('posting a user returns 201 and increases amount by one', async () => {
+test('posting user with too short username returns 400', async () => {
   const newUser = {
-    username: 'newuser',
-    password: 'securepassword',
+    username: 'ne',
+    password: 'securePassword',
     name: 'New User',
   }
-
-  const beforeResponse = await api.get('/api/users')
-  const beforeCount = beforeResponse.body.length
+  const preResponse = await api.get('/api/users')
 
   const postResponse = await api.post('/api/users').send(newUser)
-  assert.strictEqual(postResponse.status, 201)
-  const saved = postResponse.body
+  assert.strictEqual(postResponse.status, 400)
+  console.log(postResponse.body)
 
   const afterResponse = await api.get('/api/users')
-  const afterCount = afterResponse.body.length
-  assert.strictEqual(afterCount, beforeCount + 1)
 
+    assert.strictEqual(preResponse.body.length, afterResponse.body.length)
 })
 
 after(async () => {
